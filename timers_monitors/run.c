@@ -5,7 +5,6 @@
 #include "esp_timer.h"
 #include "esp_log.h"
 
-//GPIOs para os segmentos dos displays
 const int segmentPins[] = {2, 3, 8, 5, 4, 7, 10, 6};
 const int mosfetPins[] = {1, 0}; // GPIOs para os MOSFETs que controlam os displays
 
