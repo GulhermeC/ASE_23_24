@@ -36,4 +36,8 @@ void app_main (void)
 		ESP_ERROR_CHECK(i2c_master_transmit(i2cDevHandle, buffer, sizeof(buffer), -1));
 		vTaskDelay(10);
 	}
+
+	/*
+	
+	*/
 }
