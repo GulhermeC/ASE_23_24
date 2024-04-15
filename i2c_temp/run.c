@@ -38,6 +38,12 @@ void app_main (void)
 	}
 
 	/*
-	
+	while(1)
+	{
+		uint8_t txBuf[1] = {0x00};
+		uint8_t rxBuf[1];
+
+		ESP_ERROR_CHECK(i2c_master_transmit_receive(i2cDevHandle, txBuf))
+	}
 	*/
 }
