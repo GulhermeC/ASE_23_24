@@ -28,22 +28,37 @@ void app_main (void)
 	i2c_master_dev_handle_t i2cDevHandle;
 	ESP_ERROR_CHECK(i2c_master_bus_add_device(i2cBusHandle, &dev_cfg, &i2cDevHandle));
 
-
+	/* Teste 1 */
 	while (1)
 	{
-		uint8_t buffer[2] = {0x01, 0x80};
-		//uint8_t buffer[2] = {0x01, 0x00};
-		ESP_ERROR_CHECK(i2c_master_transmit(i2cDevHandle, buffer, sizeof(buffer), -1));
-		vTaskDelay(10);
+	    uint8_t buffer[2] = {0x01, 0x80};
+	    ESP_ERROR_CHECK(i2c_master_transmit(i2cDevHandle, buffer, sizeof(buffer), -1));
+	    vTaskDelay(10);
 	}
 
+	/* Teste 2 */
 	/*
+	while (1)
+	{
+	    uint8_t buffer[2] = {0x01, 0x00};
+	    ESP_ERROR_CHECK(i2c_master_transmit(i2cDevHandle, buffer, sizeof(buffer), -1));
+	    vTaskDelay(10);
+	}
+	*/
+
+	/* Teste 3 */
+	/*
+	uint8_t buffer[2] = {0x01, 0x00};
+	ESP_ERROR_CHECK(i2c_master_transmit(i2cDevHandle, buffer, sizeof(buffer), -1));
+	 
 	while(1)
 	{
-		uint8_t txBuf[1] = {0x00};
-		uint8_t rxBuf[1];
-
-		ESP_ERROR_CHECK(i2c_master_transmit_receive(i2cDevHandle, txBuf))
+	    uint8_t txBuf[1] = {0x00};
+	    uint8_t rxBuf[1];
+	 
+	    ESP_ERROR_CHECK(i2c_master_transmit_receive(i2cDevHandle, txBuf, sizeof(txBuf),
+	                                                              rxBuf, sizeof(rxBuf), -1));
+	    vTaskDelay(10);
 	}
 	*/
 }
