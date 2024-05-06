@@ -79,36 +79,31 @@ esp_err_t tc74_wakeup(i2c_master_dev_handle_t sensorHandle)
 bool tc74_is_temperature_ready(i2c_master_dev_handle_t sensorHandle)
 {
 	uint8_t status;
-    // Read the status register (assuming 0x02 as status register address)
-    ESP_ERROR_CHECK(i2c_master_receive(sensorHandle, 0x02, &status, 1, -1));
+    ESP_ERROR_CHECK(i2c_master_receive(sensorHandle, &status, sizeof(status), -1));
     return (status & 0x40) != 0;
 }
 
-esp_err_t tc74_wakeup_and_read_temp(i2c_master_dev_handle_t sensorHandle, uint8_t* pTemp);
+esp_err_t tc74_wakeup_and_read_temp(i2c_master_dev_handle_t sensorHandle, uint8_t* pTemp)
 {
     esp_err_t err = tc74_wakeup(sensorHandle);
     if (err != ESP_OK) return err;
 
     while (!tc74_is_temperature_ready(sensorHandle)) {
-        vTaskDelay(1); // Delay 1 tick to allow temperature to stabilize
+        vTaskDelay(10);
     }
 
-    return i2c_master_receive(sensorHandle, 0x00, pTemp, 1, -1);
+    return i2c_master_receive(sensorHandle, pTemp, 1, -1);
 }
 
-esp_err_t tc74_read_temp_after_cfg(i2c_master_dev_handle_t sensorHandle, uint8_t* pTemp);
+esp_err_t tc74_read_temp_after_cfg(i2c_master_dev_handle_t sensorHandle, uint8_t* pTemp)
 {
-    uint8_t config[2] = {0x01, 0x60};
-    ESP_ERROR_CHECK(i2c_master_transmit(sensorHandle, config, sizeof(config), -1));
-
-    vTaskDelay(10); // Wait for config to take effect
-
-    return i2c_master_receive(sensorHandle, 0x00, pTemp, 1, -1);
+	uint8_t read = 0x00;
+	i2c_master_transmit(sensorHandle, &read, sizeof(read), -1);
+    return i2c_master_receive(sensorHandle, pTemp, 1, -1);
 }
 
-esp_err_t tc74_read_temp_after_temp(i2c_master_dev_handle_t sensorHandle, uint8_t* pTemp);
-{
-    vTaskDelay(10);
 
-    return i2c_master_receive(sensorHandle, 0x00, pTemp, 1, -1); 
+esp_err_t tc74_read_temp_after_temp(i2c_master_dev_handle_t sensorHandle, uint8_t* pTemp)
+{
+    return i2c_master_receive(sensorHandle, pTemp, 1, -1); 
 }
